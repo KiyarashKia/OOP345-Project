@@ -21,7 +21,7 @@
     <ClCompile Include="Utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Stations.cpp">
+    <ClCompile Include="Station.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
