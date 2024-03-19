@@ -24,5 +24,4 @@ namespace seneca {
 	};
 
 }
-
 #endif

@@ -29,5 +29,4 @@ namespace seneca {
         void display(std::ostream& os, bool full) const;
     };
 }
-
 #endif
