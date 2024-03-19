@@ -51,7 +51,7 @@ namespace seneca {
     void Station::display(std::ostream& os, bool full) const {
         os << std::setw(3) << std::setfill('0') << std::right << m_id << " | ";
         os << std::setw(m_widthField) << std::left << std::setfill(' ') << m_itemName << " | ";
-        os << std::setw(6) << std::setfill('0') << std::left << m_serialNumber << " | ";
+        os << std::setw(6) << std::setfill('0') << std::right << m_serialNumber << " | ";
         if (full) {
             os << std::setw(4) << std::setfill(' ') << m_quantity << " | ";
             os << m_desc << std::endl;
