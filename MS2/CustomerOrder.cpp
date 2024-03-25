@@ -20,22 +20,32 @@ namespace seneca {
     CustomerOrder::CustomerOrder(const std::string& record) : m_name(""), m_product(""), m_cntItem(0), m_listItem(nullptr) {
         Utilities util;
         size_t next_pos = 0;
+        size_t identifierPos = 0;
         bool more = true;
+
         m_name = util.extractToken(record, next_pos, more);
-        if (more) m_product = util.extractToken(record, next_pos, more);
-        std::vector<Item*> tempItems;
+        m_product = util.extractToken(record, next_pos, more);
+        identifierPos = next_pos;
+
         while (more) {
             util.extractToken(record, next_pos, more);
             m_cntItem++;
         }
-        m_cntItem = tempItems.size();
-        m_listItem = new Item * [m_cntItem];
-        for (size_t i = 0; i < m_cntItem; ++i) {
-            m_listItem[i] = tempItems[i];
-        }
-        m_widthField = std::max(m_widthField, util.getFieldWidth());
-    }
 
+        if (m_widthField < util.getFieldWidth())
+            m_widthField = util.getFieldWidth();
+
+
+        next_pos = identifierPos;
+        more = true;
+
+        m_listItem = new Item * [m_cntItem];
+
+        for (size_t i = 0; i < m_cntItem; ++i) {
+            std::string itemName = util.extractToken(record, next_pos, more);
+            m_listItem[i] = new Item(itemName);
+        }
+    }
 
 
     CustomerOrder::CustomerOrder(CustomerOrder&& other) noexcept
