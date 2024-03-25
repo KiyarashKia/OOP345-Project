@@ -13,7 +13,7 @@
 
 namespace seneca {
 
-    size_t CustomerOrder::m_widthField = 1;
+    size_t CustomerOrder::m_widthField = 0;
 
  /*   CustomerOrder::CustomerOrder() : m_name(""), m_product(""), m_cntItem(0), m_listItem(nullptr) {}*/ // As constructor is default
 
@@ -29,6 +29,8 @@ namespace seneca {
             util.extractToken(record, next_pos, more);
             m_cntItem++;
         }
+
+        next_pos = 0;
 
         if (m_widthField < util.getFieldWidth())
             m_widthField = util.getFieldWidth();
