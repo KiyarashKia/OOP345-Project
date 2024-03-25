@@ -37,6 +37,7 @@ namespace seneca {
         if (m_widthField < util.getFieldWidth())
             m_widthField = util.getFieldWidth();
 
+
         more = true;
 
         m_listItem = new Item * [m_cntItem];
