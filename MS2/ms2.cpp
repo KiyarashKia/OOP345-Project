@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 			seneca::Utilities::setDelimiter('|');
 			::loadFromFile<seneca::Station>(argv[2], theStations);
 		}
-		catch (const std::string & err)
+		catch (const std::string& err)
 		{
 			std::cerr << err << '\n';
 			std::exit(2);
@@ -154,24 +154,24 @@ int main(int argc, char** argv)
 
 		std::cout << "CustomerOrders::fillItem()" << std::endl; // Test #6
 		std::cout << "isOrderFilled(): "
-		          << (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
-		          << std::endl;
+			<< (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
+			<< std::endl;
 
 		tmp2.fillItem(theStations[0], std::cout);
 		std::cout << "isItemFilled(\"CPU\"): "
-			      << (tmp2.isItemFilled("CPU") ? "FILLED" : "MISSING")
-		          << std::endl;
+			<< (tmp2.isItemFilled("CPU") ? "FILLED" : "MISSING")
+			<< std::endl;
 
 		std::cout << "isOrderFilled(): "
-		          << (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
-		          << std::endl;
+			<< (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
+			<< std::endl;
 
 		for (size_t i = 0u; i < theStations.size(); ++i)
 			tmp2.fillItem(theStations[i], std::cout);
 
 		std::cout << "isOrderFilled(): "
-		          << (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
-		          << std::endl;
+			<< (tmp2.isOrderFilled() ? "FILLED" : "MISSING")
+			<< std::endl;
 	}
 	return cout;
 }
