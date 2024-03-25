@@ -28,9 +28,10 @@ namespace seneca {
         while (more) {
             util.extractToken(record, next_pos, more);
             m_cntItem++;
+            next_pos = 0;
         }
 
-        next_pos = 0;
+       
 
         if (m_widthField < util.getFieldWidth())
             m_widthField = util.getFieldWidth();
