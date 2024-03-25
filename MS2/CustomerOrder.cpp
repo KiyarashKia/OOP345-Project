@@ -13,7 +13,7 @@
 
 namespace seneca {
 
-    size_t CustomerOrder::m_widthField = 0;
+    size_t CustomerOrder::m_widthField = 1;
 
  /*   CustomerOrder::CustomerOrder() : m_name(""), m_product(""), m_cntItem(0), m_listItem(nullptr) {}*/ // As constructor is default
 
