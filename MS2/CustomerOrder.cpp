@@ -13,31 +13,29 @@
 
 namespace seneca {
 
-    size_t CustomerOrder::m_widthField = 1;
+    size_t CustomerOrder::m_widthField = 0;
 
  /*   CustomerOrder::CustomerOrder() : m_name(""), m_product(""), m_cntItem(0), m_listItem(nullptr) {}*/ // As constructor is default
 
     CustomerOrder::CustomerOrder(const std::string& record) : m_name(""), m_product(""), m_cntItem(0), m_listItem(nullptr) {
         Utilities util;
-        size_t next_pos = 0; // 0 as initial value to reset
+        size_t next_pos = 0;
+        size_t positionKeep = 0;
         bool more = true;
 
         m_name = util.extractToken(record, next_pos, more);
         m_product = util.extractToken(record, next_pos, more);
-
-        next_pos = 0;
+        positionKeep = next_pos;
 
         while (more) {
             util.extractToken(record, next_pos, more);
             m_cntItem++;
         }
 
-        next_pos = 0;
-
         if (m_widthField < util.getFieldWidth())
             m_widthField = util.getFieldWidth();
 
-
+        next_pos = positionKeep;
         more = true;
 
         m_listItem = new Item * [m_cntItem];
