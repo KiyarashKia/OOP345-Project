@@ -8,96 +8,96 @@
 
 namespace seneca {
     LineManager::LineManager(const std::string& file, std::vector<Workstation*>& stations) {
-        std::ifstream in(file);
-        if (!in) {
-            throw std::runtime_error("Cannot open file: " + file);
-        }
-
-        std::string line;
         Utilities util;
-        while (std::getline(in, line)) {
-            size_t nextPos = 0;
-            bool more = true;
-            auto stationName = util.extractToken(line, nextPos, more);
-            auto nextStationName = more ? util.extractToken(line, nextPos, more) : "";
+        std::ifstream in(file);
+        if (!in.is_open()) throw std::runtime_error("Cannot open file: " + file);
 
-            Workstation* currentStation = nullptr;
-            Workstation* nextStation = nullptr;
+        std::string eachLine, cur_Wstation, next_Wstation;
+        size_t pos = 0;
+        bool more = false;
+        std::vector<std::pair<Workstation*, Workstation*>> stationLinks;
 
-            for (auto& station : stations) {
-                if (station->getItemName() == stationName) {
-                    currentStation = station;
+
+        while (std::getline(in, eachLine)) {
+            if (!eachLine.empty()) {
+                cur_Wstation = util.extractToken(eachLine, pos, more);
+                next_Wstation = more ? util.extractToken(eachLine, pos, more) : "";
+
+                Workstation* first_src = *std::find_if(stations.begin(), stations.end(),
+                    [&cur_Wstation](Workstation* ws) { return ws->getItemName() == cur_Wstation; });
+                Workstation* sec_src = nullptr;
+                if (!next_Wstation.empty()) {
+                    sec_src = *std::find_if(stations.begin(), stations.end(),
+                        [&next_Wstation](Workstation* ws) { return ws->getItemName() == next_Wstation; });
                 }
-                if (station->getItemName() == nextStationName) {
-                    nextStation = station;
-                }
+
+
+                stationLinks.emplace_back(first_src, sec_src);
             }
+            pos = 0;
+            more = false;
+        }
 
-            if (currentStation) {
-                currentStation->setNextStation(nextStation);
-                m_activeLine.push_back(currentStation);
-
-                if (!m_firstStation || stationName == "FirstStationName") { // Assuming you have a way to identify the first station
-                    m_firstStation = currentStation;
-                }
+ 
+        for (auto& link : stationLinks) {
+            if (link.second) {
+                link.first->setNextStation(link.second);
+            }
+            else {
+                link.first->setNextStation(nullptr); 
             }
         }
 
-        in.close();
-        reorderStations();
+
+        for (auto& station : stations) {
+            bool isStartingPoint = true;
+            for (auto& link : stationLinks) {
+                if (link.second == station) {
+                    isStartingPoint = false;
+                    break;
+                }
+            }
+            if (isStartingPoint) {
+                m_firstStation = station;
+                break;
+            }
+        }
+
         m_cntCustomerOrder = g_pending.size();
     }
 
+
+
     void LineManager::reorderStations() {
-        if (!m_activeLine.empty()) {
-            std::vector<Workstation*> sorted;
-            auto current = m_firstStation;
-            while (current != nullptr) {
-                sorted.push_back(current);
-                current = current->getNextStation();
-            }
-            m_activeLine = sorted;
+        std::vector<Workstation*> sorted;
+        auto current = m_firstStation;
+        while (current != nullptr) {
+            sorted.push_back(current);
+            current = current->getNextStation();
         }
+        m_activeLine = sorted;
     }
 
+
     bool LineManager::run(std::ostream& os) {
-        static size_t iteration = 0; // Static variable to keep track of iteration number
-        ++iteration; // Increment iteration count each time run() is called
+        static size_t count = 0u;
+        os << "Line Manager Iteration: " << ++count << std::endl;
 
-        // Print the current iteration number
-        os << "Line Manager Iteration: " << iteration << std::endl;
-
-        // Move the order from the pending queue to the first station, if available
         if (!g_pending.empty()) {
             *m_firstStation += std::move(g_pending.front());
-            g_pending.pop_front(); // Remove the order from the pending queue
+            g_pending.pop_front();
         }
 
-        // Execute fill operation for each station on the line
-        for (auto& station : m_activeLine) {
-            station->fill(os);
-        }
-
-        // Attempt to move CustomerOrder down the line for each station
-        bool moved = false; // Track if any orders were moved in this iteration
-        for (auto& station : m_activeLine) {
-            moved |= station->attemptToMoveOrder(); // Use bitwise OR to set moved to true if any station successfully moves an order
-        }
-
-        // If no orders were moved and the pending queue is empty, we might be in an infinite loop
-        if (!moved && g_pending.empty()) {
-            os << "Warning: No orders were moved, and the pending queue is empty. Possible infinite loop detected." << std::endl;
-        }
-
-        // Check if all customer orders have been processed
-        size_t totalProcessed = g_completed.size() + g_incomplete.size();
-        return totalProcessed == m_cntCustomerOrder;
+        for (auto& station : m_activeLine) station->fill(os);
+        for (auto& station : m_activeLine) station->attemptToMoveOrder();
+        return g_completed.size() + g_incomplete.size() == m_cntCustomerOrder;
     }
 
     void LineManager::display(std::ostream& os) const {
-        std::for_each(m_activeLine.begin(), m_activeLine.end(), [&](Workstation* station) {
+        for (auto& station : m_activeLine) {
             station->display(os);
-            });
+        }
+    
     }
         
     
