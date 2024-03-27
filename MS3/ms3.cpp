@@ -78,6 +78,8 @@ int main(int argc, char** argv)
 		}
 		std::cout << std::endl << std::endl;
 
+		// issue
+
 		std::cout << "========================================" << std::endl;
 		std::cout << "=       Display Stations (loaded)      =" << std::endl;
 		std::cout << "========================================" << std::endl;
@@ -85,6 +87,7 @@ int main(int argc, char** argv)
 		lm.display(std::cout);
 		std::cout << std::endl << std::endl;
 
+		// issue
 		std::cout << "========================================" << std::endl;
 		std::cout << "=      Display Stations (ordered)      =" << std::endl;
 		std::cout << "========================================" << std::endl;
@@ -92,6 +95,7 @@ int main(int argc, char** argv)
 		lm.display(std::cout);
 		std::cout << std::endl << std::endl;
 
+		// issue
 		std::cout << "========================================" << std::endl;
 		std::cout << "=           Filling Orders             =" << std::endl;
 		std::cout << "========================================" << std::endl;
@@ -104,13 +108,15 @@ int main(int argc, char** argv)
 		std::exit(2);
 	}
 
+
+	// issue
 	std::cout << "========================================" << std::endl;
 	std::cout << "=      Processed Orders (complete)     =" << std::endl;
 	std::cout << "========================================" << std::endl;
 	for (const auto& o : seneca::g_completed)
 		o.display(std::cout);
 	std::cout << std::endl << std::endl;
-
+	// issue
 	std::cout << "========================================" << std::endl;
 	std::cout << "=     Processed Orders (incomplete)    =" << std::endl;
 	std::cout << "========================================" << std::endl;
