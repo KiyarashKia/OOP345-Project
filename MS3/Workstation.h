@@ -1,3 +1,10 @@
+// Name: Kiarash Kia
+// Seneca Student ID: 108688235
+// Seneca email: kkia2@myseneca.ca
+// Date of completion: 03/28/2024
+//
+// I confirm that I am the only author of this file
+//   and the content was created entirely by me.
 #pragma once
 #ifndef SENECA_WORKSTATION_H
 #define SENECA_WORKSTATION_H

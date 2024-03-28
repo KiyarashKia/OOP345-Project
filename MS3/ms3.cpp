@@ -78,7 +78,6 @@ int main(int argc, char** argv)
 		}
 		std::cout << std::endl << std::endl;
 
-		// issue
 
 		std::cout << "========================================" << std::endl;
 		std::cout << "=       Display Stations (loaded)      =" << std::endl;
@@ -87,7 +86,7 @@ int main(int argc, char** argv)
 		lm.display(std::cout);
 		std::cout << std::endl << std::endl;
 
-		// issue
+	
 		std::cout << "========================================" << std::endl;
 		std::cout << "=      Display Stations (ordered)      =" << std::endl;
 		std::cout << "========================================" << std::endl;
@@ -95,7 +94,7 @@ int main(int argc, char** argv)
 		lm.display(std::cout);
 		std::cout << std::endl << std::endl;
 
-		// issue
+
 		std::cout << "========================================" << std::endl;
 		std::cout << "=           Filling Orders             =" << std::endl;
 		std::cout << "========================================" << std::endl;
@@ -109,7 +108,7 @@ int main(int argc, char** argv)
 	}
 
 
-	// issue
+
 	std::cout << "========================================" << std::endl;
 	std::cout << "=      Processed Orders (complete)     =" << std::endl;
 	std::cout << "========================================" << std::endl;

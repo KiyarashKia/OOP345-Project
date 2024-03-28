@@ -1,3 +1,10 @@
+// Name: Kiarash Kia
+// Seneca Student ID: 108688235
+// Seneca email: kkia2@myseneca.ca
+// Date of completion: 03/28/2024
+//
+// I confirm that I am the only author of this file
+//   and the content was created entirely by me.
 #include "LineManager.h"
 #include "Utilities.h"
 #include <fstream>
@@ -8,61 +15,38 @@
 
 namespace seneca {
     LineManager::LineManager(const std::string& file, std::vector<Workstation*>& stations) {
-        Utilities util;
         std::ifstream in(file);
-        if (!in.is_open()) throw std::runtime_error("Cannot open file: " + file);
+        if (!in) throw std::runtime_error("Cannot open file: " + file);
 
-        std::string eachLine, cur_Wstation, next_Wstation;
-        size_t pos = 0;
-        bool more = false;
-        std::vector<std::pair<Workstation*, Workstation*>> stationLinks;
+        std::string line;
+        Utilities util;
 
+        while (std::getline(in, line)) {
+            size_t next_pos = 0;
+            bool more = true;
+            auto stationName = util.extractToken(line, next_pos, more);
+            auto nextStationName = more ? util.extractToken(line, next_pos, more) : "";
 
-        while (std::getline(in, eachLine)) {
-            if (!eachLine.empty()) {
-                cur_Wstation = util.extractToken(eachLine, pos, more);
-                next_Wstation = more ? util.extractToken(eachLine, pos, more) : "";
+            Workstation* currentStation = *std::find_if(stations.begin(), stations.end(),
+                [&](Workstation* ws) { return ws->getItemName() == stationName; });
+            Workstation* nextStation = nullptr;
 
-                Workstation* first_src = *std::find_if(stations.begin(), stations.end(),
-                    [&cur_Wstation](Workstation* ws) { return ws->getItemName() == cur_Wstation; });
-                Workstation* sec_src = nullptr;
-                if (!next_Wstation.empty()) {
-                    sec_src = *std::find_if(stations.begin(), stations.end(),
-                        [&next_Wstation](Workstation* ws) { return ws->getItemName() == next_Wstation; });
-                }
-
-
-                stationLinks.emplace_back(first_src, sec_src);
+            if (!nextStationName.empty()) {
+                nextStation = *std::find_if(stations.begin(), stations.end(),
+                    [&](Workstation* ws) { return ws->getItemName() == nextStationName; });
             }
-            pos = 0;
-            more = false;
+
+            currentStation->setNextStation(nextStation);
+            m_activeLine.push_back(currentStation);
         }
 
- 
-        for (auto& link : stationLinks) {
-            if (link.second) {
-                link.first->setNextStation(link.second);
-            }
-            else {
-                link.first->setNextStation(nullptr); 
-            }
-        }
+        auto isNotAPredecessor = [&](Workstation* ws) {
+            return std::none_of(m_activeLine.begin(), m_activeLine.end(), [&](Workstation* innerWs) {
+                return innerWs->getNextStation() == ws;
+                });
+            };
 
-
-        for (auto& station : stations) {
-            bool isStartingPoint = true;
-            for (auto& link : stationLinks) {
-                if (link.second == station) {
-                    isStartingPoint = false;
-                    break;
-                }
-            }
-            if (isStartingPoint) {
-                m_firstStation = station;
-                break;
-            }
-        }
-
+        m_firstStation = *std::find_if(m_activeLine.begin(), m_activeLine.end(), isNotAPredecessor);
         m_cntCustomerOrder = g_pending.size();
     }
 
@@ -94,11 +78,10 @@ namespace seneca {
     }
 
     void LineManager::display(std::ostream& os) const {
-        for (auto& station : m_activeLine) {
-            station->display(os);
-        }
-    
+        for_each(m_activeLine.begin(), m_activeLine.end(), [&](Workstation* src) {
+            src->display(os);
+            });
     }
-        
-    
 }
+    
+
