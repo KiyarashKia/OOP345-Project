@@ -10,7 +10,7 @@
 
 namespace seneca {
 	
-	char Utilities::m_delimiter = ' '; // setting default static delimiter
+	char Utilities::m_delimiter = ' ';
 
 	void Utilities::setFieldWidth(size_t newWidth) {
 		m_widthField = newWidth;
