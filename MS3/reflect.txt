@@ -1,0 +1,19 @@
+// Name: Kiarash Kia
+// Seneca Student ID: 108688235
+// Seneca email: kkia2@myseneca.ca
+// Date of completion: 03/29/2024
+//
+// I confirm that I am the only author of this file
+//   and the content was created entirely by me.
+
+This milestone was an opportunity for me to go through some concepts we had during the semester, 
+and also some exploration I had to go for out of that as each phase brought its unique set of challenges.
+Starting with MS1, the focus was on the Utils and Station classes. This foundational step was important for parsing input 
+files and managing station-specific items, and setting the stage for more complex operations ahead.
+MS2 introduced the CustomerORder module. This phase was supposed to expand the project to handle customer orders and managing the
+assembly line's inventory items, showing the importance of efficient data management.
+And lastly about MS3, we had to integrate everything of Workstation and LineManager modules.
+This was to showcase the dynamic movement of orders through the assembly line, with each workstation playing its role in
+filling orders. I had challenges to ensure the correct sequence of operations and managing the flow of orders.
+Overall, this project was a nice but complex exersice for me in C++, but well organized from basic class structures to STL features,
+containers and algorithms. I feel better in problem-solving even I would say.
